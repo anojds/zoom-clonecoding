@@ -1,5 +1,5 @@
 import http from "http";
-import SocketIO from "socket.io"
+import SocketIO, { Socket } from "socket.io"
 import express from "express";
 
 const app = express()
@@ -16,7 +16,7 @@ const io = SocketIO(httpServer);
 
 
 io.on("connection", socket => {
-  console.log(socket)
+  socket.on("enter_room", msg => console.log(msg));
 })
 
 
