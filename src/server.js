@@ -15,8 +15,11 @@ const httpServer = http.createServer(app);
 const io = SocketIO(httpServer);
 
 
-io.on("connection", socket => {
-  socket.on("enter_room", msg => console.log(msg));
+io.on("connection", (socket) => {
+  socket.on("enter_room", (roomName, done) => {
+    socket.join(roomName)
+    done()
+  });
 })
 
 
