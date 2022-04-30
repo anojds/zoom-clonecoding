@@ -16,11 +16,22 @@ const io = SocketIO(httpServer);
 
 
 io.on("connection", (socket) => {
+  const randomNumFloor = Math.floor(Math.random()*9999)+1000;
+  socket["nickname"] = `익명 #${randomNumFloor}`;
+
   socket.on("enter_room", (roomName, done) => {
     socket.join(roomName)
     done()
-    socket.to(roomName).emit("welcome");
+    socket.to(roomName).emit("welcome", socket.nickname);
   });
+  socket.on("disconnecting", () => {
+    socket.rooms.forEach((room) => socket.to(room).emit("bye", socket.nickname))
+  });
+  socket.on("new_message", (msg, room, done) => {
+    socket.to(room).emit("new_message", `${socket.nickname}: ${msg}`);
+    done();
+  });
+  socket.on("nickname", nickname => socket["nickname"] = nickname)
 })
 
 
