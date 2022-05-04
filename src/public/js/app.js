@@ -68,3 +68,13 @@ socket.on("bye", (left) => {
 })
 
 socket.on("new_message", addMessage)
+
+socket.on("room_change",  (rooms) => {
+    roomList.innerHTML = "";
+    const roomList = welcome.querySelector('ul');
+    rooms.forEach((room) => {
+        const li = document.createElement('li');
+        li.innerText = room;
+        roomList.appendChild(li)
+    })
+})
